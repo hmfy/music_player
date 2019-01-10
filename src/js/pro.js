@@ -37,6 +37,7 @@
         function frame() {
             var curTime = new Date().getTime();
             var per = lastPer + (curTime - startTime) / (duration * 1000);
+            
             update(per)
             cancelAnimationFrame(frameId);          //防止动画叠加
             frameId = requestAnimationFrame(frame)
@@ -48,6 +49,7 @@
     function update(per) {
         var curTime = per * duration;
         var translate = (per - 1) * 100 + '%'
+        
         curTime = formatTime(curTime);
         $('.cur-time').html(curTime);
         $('.pro-top').css({

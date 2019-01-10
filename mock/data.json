@@ -27,22 +27,14 @@
   },{
     "image": "/source/song_4.jpg",
     "audio": "/source/song_4.mp3",
-    "song": "走马",
-    "album": "如也",
-    "singer": "陈粒",
-    "duration": 235,
-    "isLike": true
-  },{
-    "image": "/source/song_5.jpg",
-    "audio": "/source/song_5.mp3",
     "song": "旅客",
     "album": "你不能爱我",
     "singer": "牛奶咖啡",
     "duration": 258,
     "isLike": true
   },{
-    "image": "/source/song_6.jpg",
-    "audio": "/source/song_6.mp3",
+    "image": "/source/song_5.jpg",
+    "audio": "/source/song_5.mp3",
     "song": "讲真的",
     "album": "不要你为难",
     "singer": "曾惜",

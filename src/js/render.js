@@ -13,7 +13,7 @@
     function renderImg(src) {
         var img = new Image();
         img.src = src;
-        img.onload = function () {
+        img.onload = () => {
             $('.img-box img').attr('src', src);
             root.blurImg(img, $('body'));
         }

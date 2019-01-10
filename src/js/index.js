@@ -1,11 +1,11 @@
-var root = window.player,
-    len = 0,
-    audio = root.audioManager,
-    flag = true,
-    timer,
-    control,
-    duration,
-    dataList;
+var root  = window.player,      // 主接口
+    len   = 0,                  // 数据长度
+    audio = root.audioManager,  // 播放器对象
+    myPro   = root.pro,         // 进度条接口对象
+    timer = null,               // 定时器
+    control,                    // 歌曲索引控制
+    duration,                   // 歌曲总时间(秒)
+    dataList;                   // data(外部)
 
 // 数据获取
 function getData(url) {
@@ -13,39 +13,39 @@ function getData(url) {
         type: 'GET',
         url,
         success(data) {
-            data = JSON.parse(data)          //hubuilder 打包时需要此处理
+            // data = JSON.parse(data)          //hubuilder 打包时需要此处理
+            var dat = data[0];
             dataList = data;
             len = data.length;
+            
+            //初始化
             control = new root.controlIndex(len);
             watchList(data, len);
-            root.render(data[0]);
-            audio.getAudio(data[0].audio);
-            root.pro.renderAllTime(data[0].duration)
-            duration = data[0].duration
+            root.render(dat);
+            audio.getAudio(dat.audio);
+            myPro.renderAllTime(dat.duration)
+            duration = dat.duration
             bindEvent();
             bindTouch()
-        },
-        error() {
-            console.log('error');
         }
     })
 }
 // 事件绑定
 function bindEvent() {
     //自定义事件(切换到第 index首歌)
-    $('body').on('playChange', function (e, index) {
+    $('body').on('playChange', (e, index) => {
         root.render(dataList[index]);
         audio.getAudio(dataList[index].audio);
-        root.pro.renderAllTime(dataList[index].duration);
+        myPro.renderAllTime(dataList[index].duration);
         duration = dataList[index].duration;
         if (audio.status == 'play') {
             //播放时切歌
             audio.play();
-            root.pro.start(0);
+            myPro.start(0);
             rotated(0);
         } else {
             //暂停时切歌
-            root.pro.update(0)
+            myPro.update(0)
         }
         $('.img-box').attr('data-deg', 0)
         $('.img-box').css({
@@ -55,28 +55,28 @@ function bindEvent() {
     })
 
     // 上一首
-    $('.prev').on('click', function () {
+    $('.prev').on('click', () => {
         var i = control.prev();
         $('body').trigger('playChange', i);
     })
 
     // 下一首
-    $('.next').on('click', function () {
+    $('.next').on('click', () => {
         var i = control.next();
         $('body').trigger('playChange', i)
     })
 
     // 播放按钮点击
-    $('.play').on('click', function () {
+    $('.play').on('click', () => {
         if (audio.status == 'pause') {
             var deg = $('.img-box').attr('data-deg')
             rotated(deg);
-            root.pro.start();
+            myPro.start();
             audio.play();
         } else {
             clearInterval(timer)
             audio.pause();
-            root.pro.stop();
+            myPro.stop();
         }
         $('.play').toggleClass('playing');
     })
@@ -88,7 +88,7 @@ function bindEvent() {
     }
 
     // 显示/隐藏列表
-    $('.list').on('click', function () {
+    $('.list').on('click', () => {
         myToggle(['.control', 'hide', '.song-list', 'see'])
         
         // 隐藏列表 (点击除歌曲列表以外的部分)  
@@ -99,7 +99,7 @@ function bindEvent() {
 
     })
 
-    // 点击切歌
+    // 列表切歌
     $('.song-list ul').on('click', 'li, span, div', e => {
         var sIndex = $(e.target).attr('data-index');
         myToggle(['.control', 'hide', '.song-list', 'see']);
@@ -121,21 +121,21 @@ function bindTouch() {
     var width = $('.pro-bottom').offset().width;
 
     // 进度条小圆点
-    $('.spot').on('touchtart', function (e) {
-        root.pro.stop()
-    }).on('touchmove', function (e) {
+    $('.spot').on('touchtart', e => {
+        myPro.stop()
+    }).on('touchmove', e => {
         var x = e.changedTouches[0].clientX - left;
         var per = x / width;
         if (per >= 0 && per < 1) {
-            root.pro.update(per)
+            myPro.update(per)
         }
-    }).on('touchend', function (e) {
+    }).on('touchend', e => {
         var x = e.changedTouches[0].clientX - left;
         var per = x / width;
         var curTime = per * duration;
         if (per >= 0 && per < 1) {
             audio.playTo(curTime);
-            root.pro.start(per);
+            myPro.start(per);
             audio.play();
             $('.play').addClass('playing');
         }
@@ -143,7 +143,7 @@ function bindTouch() {
 }
 
 // 歌曲播放完,让其触发点击事件,自动播放下一曲
-$(audio.audio).on('ended', function () {
+$(audio.audio).on('ended', () => {
     $('.next').trigger('click')
 })
 
@@ -163,7 +163,7 @@ function watchList(arr, lien){
 // 封面旋转
 function rotated(deg) {
     clearInterval(timer)
-    timer = setInterval(function () {
+    timer = setInterval(() => {
         deg = +deg
         deg += 2;
         $('.img-box').attr('data-deg', deg)

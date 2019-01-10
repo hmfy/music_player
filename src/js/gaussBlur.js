@@ -5,11 +5,11 @@ zepto.min.js
     'use strict';
 
     function gaussBlur(imgData) {
-        var pixes = imgData.data;
-        var width = imgData.width;
-        var height = imgData.height;
+        var pixes       = imgData.data;
+        var width       = imgData.width;
+        var height      = imgData.height;
         var gaussMatrix = [],
-            gaussSum = 0,
+            gaussSum    = 0,
             x, y,
             r, g, b, a,
             i, j, k, len;
