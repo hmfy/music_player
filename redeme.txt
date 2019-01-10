@@ -6,6 +6,10 @@
     5.图片旋转
     6.列表切歌
 
+当前环境设置: 
+1.默认开发环境,不压缩,设置production则压缩
+2.设置方法(bash环境): export NODE_ENV=production
+
 run:
     1.安装依赖 npm i
     2.命令行 gulp
@@ -13,4 +17,5 @@ run:
 
 apk打包:
     1.更改dist内的mock下的json文件路径,改为相对路径
-    2.找到dist内的js下的index.js,给ajax请求到的数据做处理JSON.parse()
+    2.将mock和resource放到dist文件夹下,打包dist
+    3.找到dist内的js下的index.js,给ajax请求到的数据做处理JSON.parse()
