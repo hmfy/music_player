@@ -60,7 +60,7 @@ gulp.task('server', function (){
     connect.server({
         port: 8888,             // 端口号
         livereload: true,       // 开启热加载
-        root: './dist'          // 让dist为服务器根目录
+        //root: './dist'          // 让dist为服务器根目录
     })
 })
 
