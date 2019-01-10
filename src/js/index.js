@@ -174,4 +174,4 @@ function rotated(deg) {
     }, 160)
 }
 
-getData('../mock/data.json')
+getData('/mock/data.json')
